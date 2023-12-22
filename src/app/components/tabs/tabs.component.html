@@ -1,0 +1,27 @@
+<div class="tabs">
+  <tui-tabs [activeItemIndex]="activeIndex">
+   <ng-container *ngFor="let tab of tabs; index as index">
+     <button class="tabs__btn" tuiTab (click)="onTabChange(tab)">
+       @if (tab.editMode) {
+         <tui-input
+           class="tabs__input"
+          [(ngModel)]="tab.name"
+         />
+       } @else {
+         {{ tab.name }}
+       }
+       @if (index === activeIndex) {
+          <span class="tabs__edit" (click)="editTab(tab)"></span>
+       }
+     </button>
+   </ng-container>
+  </tui-tabs>
+
+
+  @if (tabs.length >= limits.minTabs && tabs.length <= limits.maxTabs) {
+    <button tuiButton size="s" appearance="flat" (click)="addTab()">
+      Add +
+    </button>
+  }
+
+</div>

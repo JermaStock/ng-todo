@@ -3,3 +3,10 @@ export type TodoItem = {
   text: string
   done: boolean
 }
+
+export type TodoTab = {
+  id: number
+  name: string
+  editMode: boolean
+}
+
