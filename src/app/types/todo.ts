@@ -1,5 +1,5 @@
 export type TodoItem = {
-  id: string | null
+  id: string
   text: string
   done: boolean
 }

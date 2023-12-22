@@ -1,7 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TodoFormComponent} from "./todo-form/todo-form.component";
 import {TodoListComponent} from "./todo-list/todo-list.component";
 import {TodoItem} from "../../types/todo";
+import {TodoService} from "../../services/todo.service";
 
 @Component({
   selector: 'app-todo',
@@ -13,18 +14,19 @@ import {TodoItem} from "../../types/todo";
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss'
 })
-export class TodoComponent {
-  @Input() todoItem: TodoItem = {
-    id: null,
-    text: '',
-    done: false,
-  };
-  todoItems: TodoItem[] = [];
+export class TodoComponent implements OnInit {
+  todos: TodoItem[] = [];
 
-  constructor() {
+  constructor(
+    private todoService: TodoService
+  ) {
+  }
+
+  ngOnInit() {
+    this.todoService.todos$.subscribe(todos => this.todos = todos);
   }
 
   addTodo(todo: TodoItem) {
-    this.todoItems.push(todo);
+    this.todoService.addTodo(todo);
   }
 }

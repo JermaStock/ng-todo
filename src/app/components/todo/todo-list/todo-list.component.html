@@ -1,11 +1,20 @@
-@for (todo of todoItems; track todo.id) {
-  {{ todo.text }}
-} @empty {
-  No todos
-}
+<ul class="todo-list">
 
-<table class="tui-table">
-  <tbody>
-
-  </tbody>
-</table>
+  @for (todo of todos; track todo.id) {
+    <li class="todo-list__item" [class.todo-list__item--done]="todo.done">
+      <div class="todo">
+        {{ todo.text }}
+      </div>
+      <div class="todo-list__controls">
+        <button tuiButton size="s" (click)="toggleTodo(todo)">
+          Готово
+        </button>
+        <button tuiButton size="s" (click)="deleteTodo(todo)">
+          Удалить
+        </button>
+      </div>
+    </li>
+  } @empty {
+    <li class="todo-list__item">No data</li>
+  }
+</ul>
