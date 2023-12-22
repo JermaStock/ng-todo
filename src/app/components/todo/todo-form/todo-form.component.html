@@ -1,0 +1,17 @@
+<div class="todo-form">
+  <form [formGroup]="todoForm">
+    <tui-input
+      formControlName="todoText"
+    >
+      Введите название дела
+      <input tuiTextfield>
+    </tui-input>
+
+    <button
+      tuiButton
+      (click)="onSave()"
+    >
+      Добавить дело
+    </button>
+  </form>
+</div>
