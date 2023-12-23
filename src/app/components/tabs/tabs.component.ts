@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {TuiInputModule, TuiTabsModule} from "@taiga-ui/kit";
-import {TuiButtonModule} from "@taiga-ui/core";
+import {TuiButtonModule, TuiTextfieldControllerModule} from "@taiga-ui/core";
 import {TodoTab} from "../../types/todo";
 import {NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -13,7 +13,8 @@ import {FormsModule} from "@angular/forms";
     TuiButtonModule,
     NgForOf,
     TuiInputModule,
-    FormsModule
+    FormsModule,
+    TuiTextfieldControllerModule
   ],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss'
@@ -31,8 +32,13 @@ export class TabsComponent {
     maxTabs: 10,
   }
 
-  editTab(tab: TodoTab) {
-    tab.editMode = true;
+  editTab(tab: TodoTab, index: number) {
+    if (index !== this.activeIndex) return;
+    tab.editMode = !tab.editMode ;
+  }
+
+  log(tab: TodoTab) {
+    console.log(tab);
   }
 
   addTab() {

@@ -5,13 +5,15 @@
        @if (tab.editMode) {
          <tui-input
            class="tabs__input"
-          [(ngModel)]="tab.name"
-         />
+           [(ngModel)]="tab.name"
+           [tuiTextfieldSize]="'s'"
+         >
+           <input tuiTextfield (blur)="editTab(tab, index)" />
+         </tui-input>
        } @else {
-         {{ tab.name }}
-       }
-       @if (index === activeIndex) {
-          <span class="tabs__edit" (click)="editTab(tab)"></span>
+         <span (click)="editTab(tab, index)">
+           {{ tab.name }}
+         </span>
        }
      </button>
    </ng-container>

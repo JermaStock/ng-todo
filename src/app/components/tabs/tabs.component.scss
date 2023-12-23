@@ -5,6 +5,7 @@
 
   &__btn {
     position: relative;
+    min-width: 3rem;
 
     &:hover {
       .tabs__edit {
@@ -14,8 +15,23 @@
   }
 
   &__input {
-    width: 100%;
+    min-width: 3rem;
     height: 100%;
+    &::ng-deep {
+      [tuiWrapper][data-appearance=textfield] {
+        background: transparent;
+        color: var(--tui-text-01) !important;
+        box-shadow: none !important;
+      }
+      [tuiWrapper][data-appearance=textfield][data-appearance=textfield]:after {
+        border: none;
+      }
+      input {
+        min-width: 3rem;
+        font-size: 1rem;
+        padding: 0 !important;
+      }
+    }
   }
 
   &__edit {
