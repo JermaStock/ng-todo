@@ -1,14 +1,30 @@
 import { Injectable } from '@angular/core';
-import {TodoItem} from "../types/todo";
-import {BehaviorSubject} from "rxjs";
+import {TodoItem, TodoList} from "../types/todo";
+import {BehaviorSubject, Subject, tap} from "rxjs";
+import {LocalStorageService} from "./local-storage.service";
+import {TabsService} from "./tabs.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
   #todos: TodoItem[] = [];
+  #allTodos: TodoList[] = [];
   todos$ = new BehaviorSubject(this.#todos);
-  constructor() { }
+  allTodos$ = new BehaviorSubject(this.#allTodos);
+  constructor(
+    private readonly localStorageService: LocalStorageService,
+    private readonly tabsService: TabsService
+  ) { }
+
+  loadTodos() {
+
+    if (!this.localStorageService.getItem('todoLists')) {
+      this.localStorageService.setItem('todoLists', [{ todoListId: this.tabsService.initialStartTodoId, todoList: [] }]);
+    }
+    this.#allTodos = [this.localStorageService.getItem('todoLists')];
+    this.allTodos$.next(this.#allTodos);
+  }
 
   addTodo(todo: TodoItem) {
     this.#todos.push(todo);

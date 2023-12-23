@@ -7,6 +7,9 @@ import {TuiTabsModule} from "@taiga-ui/kit";
 import {TuiButtonModule, TuiSvgModule} from "@taiga-ui/core";
 import {NgForOf} from "@angular/common";
 import {TabsComponent} from "../tabs/tabs.component";
+import {TabsService} from "../../services/tabs.service";
+import {concatMap, switchMap, tap} from "rxjs";
+import {LocalStorageService} from "../../services/local-storage.service";
 
 @Component({
   selector: 'app-todo',
@@ -26,15 +29,50 @@ import {TabsComponent} from "../tabs/tabs.component";
 })
 export class TodoComponent implements OnInit {
   todos: TodoItem[] = [];
-  activeItemIndex = 0;
-  items = Array.from({length: 5}, (_, i) => `Item #${i}`);
+  tabs: any[] = [];
 
   constructor(
-    private todoService: TodoService
+    private readonly todoService: TodoService,
+    private readonly tabsService: TabsService,
+    private readonly localStorageService: LocalStorageService
   ) {
   }
 
   ngOnInit() {
-    this.todoService.todos$.subscribe(todos => this.todos = todos);
+   this.tabsService.tabs$.pipe(
+     tap(() => this.tabsService.loadTabs()),
+     tap(tabs => this.tabs = tabs),
+   ).subscribe();
+
+   this.todoService.allTodos$.pipe(
+     tap(() => this.todoService.loadTodos())
+   ).subscribe()
+  }
+
+
+  test() {
+
+    let todoLists = [
+      {
+        todoListId: Date.now(),
+        todoList: [
+          {name: 'delo', done: false},
+          {name: 'delo2', done: true},
+        ]
+      },
+      {
+        todoListId: Date.now(),
+        todoList: [
+          {name: 'delo', done: false},
+          {name: 'delo2', done: true},
+        ]
+      }
+    ];
+
+    let todoTab = [
+      { id: Date.now() },
+      { id: Date.now() },
+    ];
+
   }
 }

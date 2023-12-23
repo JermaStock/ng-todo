@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {TuiInputModule, TuiTabsModule} from "@taiga-ui/kit";
 import {TuiButtonModule, TuiTextfieldControllerModule} from "@taiga-ui/core";
 import {TodoTab} from "../../types/todo";
@@ -22,10 +22,7 @@ import {switchMap, tap} from "rxjs";
   styleUrl: './tabs.component.scss'
 })
 export class TabsComponent implements OnInit {
-  tabs: Array<TodoTab> = [
-    {id: Date.now(), name: 'First', editMode: false},
-    {id: Date.now() + 1, name: 'Second', editMode: false},
-  ];
+  tabs: Array<TodoTab> = [];
 
   activeIndex: number;
 
