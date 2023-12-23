@@ -22,7 +22,7 @@ export class TodoService {
     if (!this.localStorageService.getItem('todoLists')) {
       this.localStorageService.setItem('todoLists', [{ todoListId: this.tabsService.initialStartTodoId, todoList: [] }]);
     }
-    this.#allTodos = [this.localStorageService.getItem('todoLists')];
+    this.#allTodos = this.localStorageService.getItem('todoLists');
     this.allTodos$.next(this.#allTodos);
   }
 

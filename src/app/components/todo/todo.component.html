@@ -1,11 +1,11 @@
 <app-tabs />
 
-<!--@for (tab of tabs; track tab.id) {-->
-<!--    @if () {-->
-<!--      <app-todo-form />-->
-<!--      <app-todo-list [todos]="todos" />-->
-<!--    }-->
-
-<app-todo-form />
-<app-todo-list [todos]="todos" />
+@for (tab of tabs; track tab.id) {
+  @for (todo of todoLists; track todo.todoListId) {
+    @if (tab.id === todo.todoListId) {
+      <app-todo-form />
+      <app-todo-list [todos]=todo.todoList />
+    }
+  }
+}
 

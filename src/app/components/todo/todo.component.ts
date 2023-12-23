@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TodoFormComponent} from "./todo-form/todo-form.component";
 import {TodoListComponent} from "./todo-list/todo-list.component";
-import {TodoItem} from "../../types/todo";
+import {TodoItem, TodoList} from "../../types/todo";
 import {TodoService} from "../../services/todo.service";
 import {TuiTabsModule} from "@taiga-ui/kit";
 import {TuiButtonModule, TuiSvgModule} from "@taiga-ui/core";
@@ -28,6 +28,7 @@ import {LocalStorageService} from "../../services/local-storage.service";
   providers: [TodoService]
 })
 export class TodoComponent implements OnInit {
+  todoLists: TodoList[];
   todos: TodoItem[] = [];
   tabs: any[] = [];
 
@@ -40,12 +41,13 @@ export class TodoComponent implements OnInit {
 
   ngOnInit() {
    this.tabsService.tabs$.pipe(
-     tap(() => this.tabsService.loadTabs()),
      tap(tabs => this.tabs = tabs),
+     tap(() => this.tabsService.loadTabs()),
    ).subscribe();
 
    this.todoService.allTodos$.pipe(
-     tap(() => this.todoService.loadTodos())
+     tap(todoLists => this.todoLists = todoLists),
+     tap(() => this.todoService.loadTodos()),
    ).subscribe()
   }
 
