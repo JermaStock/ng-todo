@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TuiInputModule, TuiTabsModule} from "@taiga-ui/kit";
 import {TuiButtonModule, TuiTextfieldControllerModule} from "@taiga-ui/core";
 import {TodoTab} from "../../types/todo";
 import {NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {TabsService} from "../../services/tabs.service";
+import {switchMap, tap} from "rxjs";
 
 @Component({
   selector: 'app-tabs',
@@ -19,54 +21,44 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss'
 })
-export class TabsComponent {
+export class TabsComponent implements OnInit {
   tabs: Array<TodoTab> = [
     {id: Date.now(), name: 'First', editMode: false},
     {id: Date.now() + 1, name: 'Second', editMode: false},
   ];
 
-  activeIndex = 0;
+  activeIndex: number;
 
   limits = {
     minTabs: 1,
     maxTabs: 5,
   }
 
-  constructor() {
+  constructor(
+    private readonly tabsService: TabsService
+  ) {
+  }
+
+  ngOnInit() {
+    this.tabsService.tabs$.pipe(
+      tap(res => this.tabs = res ),
+      switchMap(() => this.tabsService.activeIndex$),
+    ).subscribe((res) => this.activeIndex = res);
   }
 
   editTab(tab: TodoTab, index: number) {
-    if (index !== this.activeIndex) return;
-    tab.editMode = !tab.editMode ;
-  }
-
-  validateTab(tab: TodoTab, index: number) {
-    if (!tab.name) {
-      this.tabs = [...this.tabs.filter(t => t.id !== tab.id)];
-    }
-    if (tab.name.length > 10) {
-      tab.name = tab.name.slice(0, 6) + '...';
-    }
+    this.tabsService.editModeToggle(tab, index)
   }
 
   onSave(tab: TodoTab, index: number) {
-    this.editTab(tab, index);
-    this.validateTab(tab, index);
-  }
-
-  log(tab: TodoTab) {
-    console.log(tab);
+    this.tabsService.onSave(tab, index);
   }
 
   addTab() {
-    this.tabs.push({
-      id: Date.now(),
-      name: 'New tab',
-      editMode: false,
-    });
+    this.tabsService.addTab();
   }
 
   onTabChange(tab: any) {
-    this.activeIndex = this.tabs.findIndex(t => t.id === tab.id);
+    this.tabsService.tabChange(tab);
   }
 }
