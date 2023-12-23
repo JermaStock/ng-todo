@@ -29,12 +29,29 @@ export class TabsComponent {
 
   limits = {
     minTabs: 1,
-    maxTabs: 10,
+    maxTabs: 5,
+  }
+
+  constructor() {
   }
 
   editTab(tab: TodoTab, index: number) {
     if (index !== this.activeIndex) return;
     tab.editMode = !tab.editMode ;
+  }
+
+  validateTab(tab: TodoTab, index: number) {
+    if (!tab.name) {
+      this.tabs = [...this.tabs.filter(t => t.id !== tab.id)];
+    }
+    if (tab.name.length > 10) {
+      tab.name = tab.name.slice(0, 6) + '...';
+    }
+  }
+
+  onSave(tab: TodoTab, index: number) {
+    this.editTab(tab, index);
+    this.validateTab(tab, index);
   }
 
   log(tab: TodoTab) {

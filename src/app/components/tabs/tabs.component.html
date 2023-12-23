@@ -8,7 +8,7 @@
            [(ngModel)]="tab.name"
            [tuiTextfieldSize]="'s'"
          >
-           <input tuiTextfield (blur)="editTab(tab, index)" />
+           <input tuiTextfield (blur)="onSave(tab, index)" />
          </tui-input>
        } @else {
          <span (click)="editTab(tab, index)">
